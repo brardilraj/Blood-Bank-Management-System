@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 load_dotenv()
 class Config:
     # Flask app config
-    SECRET_KEY = '897797'  # Change this to a secure random key in production!
     
     # MySQL connection config
     MYSQL_HOST = 'localhost'
