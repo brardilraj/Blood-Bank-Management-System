@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-white border-bottom-0 py-4">
+        <h4 class="mb-0">{{ title }}</h4>
+    </div>
+    
+    <div class="card-body">
+        <form method="POST" class="needs-validation" novalidate>
+            <div class="row g-3">
+                <!-- Name Field -->
+                <div class="col-md-6">
+                    <label for="name" class="form-label">Full Name</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <input type="text" 
+                               class="form-control" 
+                               id="name"
+                               name="name"
+                               value="{{ donor.Name if donor }}"
+                               placeholder="Enter full name"
+                               required>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter donor's name
+                    </div>
+                </div>
+
+                <!-- Blood Group Field -->
+                <div class="col-md-6">
+                    <label for="blood_group" class="form-label">Blood Group</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-tint"></i>
+                        </span>
+                        <select class="form-select" 
+                                id="blood_group" 
+                                name="blood_group" 
+                                required>
+                            <option value="">Select Blood Group</option>
+                            {% for bg in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+                            <option value="{{ bg }}" 
+                                {% if donor and donor.Blood_Group == bg %}selected{% endif %}>
+                                {{ bg }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please select blood group
+                    </div>
+                </div>
+
+                <!-- Age Field -->
+                <div class="col-md-4">
+                    <label for="age" class="form-label">Age</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-calendar-alt"></i>
+                        </span>
+                        <input type="number" 
+                               class="form-control" 
+                               id="age"
+                               name="age"
+                               value="{{ donor.Age if donor }}"
+                               min="18" 
+                               max="65"
+                               placeholder="Age"
+                               required>
+                    </div>
+                    <div class="invalid-feedback">
+                        Age must be between 18 and 65
+                    </div>
+                </div>
+
+                <!-- Gender Field -->
+                <div class="col-md-4">
+                    <label for="gender" class="form-label">Gender</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-venus-mars"></i>
+                        </span>
+                        <select class="form-select" 
+                                id="gender" 
+                                name="gender" 
+                                required>
+                            <option value="">Select Gender</option>
+                            <option value="Male" {% if donor and donor.Gender == 'Male' %}selected{% endif %}>
+                                Male
+                            </option>
+                            <option value="Female" {% if donor and donor.Gender == 'Female' %}selected{% endif %}>
+                                Female
+                            </option>
+                            <option value="Other" {% if donor and donor.Gender == 'Other' %}selected{% endif %}>
+                                Other
+                            </option>
+                        </select>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please select gender
+                    </div>
+                </div>
+
+                <!-- Contact Field -->
+                <div class="col-md-4">
+                    <label for="contact" class="form-label">Contact Number</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-phone"></i>
+                        </span>
+                        <input type="tel" 
+                               class="form-control" 
+                               id="contact"
+                               name="contact"
+                               value="{{ donor.Contact_Number if donor }}"
+                               pattern="[0-9]{10}"
+                               placeholder="10-digit number"
+                               required>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter valid 10-digit number
+                    </div>
+                </div>
+
+                <!-- Email Field -->
+                <div class="col-md-6">
+                    <label for="email" class="form-label">Email Address</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <input type="email" 
+                               class="form-control" 
+                               id="email"
+                               name="email"
+                               value="{{ donor.Email if donor }}"
+                               placeholder="name@example.com"
+                               required>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter valid email address
+                    </div>
+                </div>
+
+                <!-- Last Donation Date -->
+                <div class="col-md-6">
+                    <label for="last_donation" class="form-label">Last Donation Date</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-calendar-check"></i>
+                        </span>
+                        <input type="date" 
+                               class="form-control" 
+                               id="last_donation"
+                               name="last_donation"
+                               value="{{ donor.Last_Donation_Date if donor }}">
+                    </div>
+                </div>
+
+                <!-- Eligibility Checkbox -->
+                <div class="col-12">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" 
+                               type="checkbox" 
+                               role="switch" 
+                               id="eligibility"
+                               name="eligibility"
+                               {% if donor and donor.Eligibility_Status == 'Eligible' %}checked{% endif %}>
+                        <label class="form-check-label" for="eligibility">
+                            Eligible for Donation
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="col-12 text-end mt-4">
+                    <button type="submit" class="btn btn-danger px-5">
+                        <i class="fas fa-save me-2"></i>Save
+                    </button>
+                    <a href="{{ url_for('donor_list') }}" class="btn btn-secondary px-5">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Client-side validation
+(() => {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
+{% endblock %}

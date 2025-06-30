@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-white border-bottom-0 py-4">
+        <h4 class="mb-0">{{ title }}</h4>
+    </div>
+    
+    <div class="card-body">
+        <form method="POST" class="needs-validation" novalidate>
+            <div class="row g-3">
+                <!-- Hospital Dropdown -->
+                <div class="col-md-6">
+                    <label for="hospital_id" class="form-label">Hospital</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-hospital"></i>
+                        </span>
+                        <select class="form-select" id="hospital_id" name="hospital_id" required>
+                            <option value="">Select Hospital</option>
+                            {% for hospital in hospitals %}
+                            <option value="{{ hospital.Hospital_ID }}">{{ hospital.Name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please select a hospital.
+                    </div>
+                </div>
+
+                <!-- Blood Group -->
+                <div class="col-md-6">
+                    <label for="blood_group" class="form-label">Blood Group</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-tint"></i>
+                        </span>
+                        <select class="form-select" id="blood_group" name="blood_group" required>
+                            <option value="">Select Blood Group</option>
+                            {% for bg in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+                            <option value="{{ bg }}">{{ bg }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please select a blood group.
+                    </div>
+                </div>
+
+                <!-- Units Requested -->
+                <div class="col-md-6">
+                    <label for="units" class="form-label">Units Requested</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-vial"></i>
+                        </span>
+                        <input type="number" 
+                               class="form-control" 
+                               id="units"
+                               name="units"
+                               min="1"
+                               placeholder="Enter number of units"
+                               required>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter a valid number of units (minimum 1).
+                    </div>
+                </div>
+
+                <!-- Notes -->
+                <div class="col-md-6">
+                    <label for="notes" class="form-label">Notes (Optional)</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-comment"></i>
+                        </span>
+                        <textarea class="form-control" id="notes" name="notes" rows="4"></textarea>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="col-12 text-end mt-4">
+                    <button type="submit" class="btn btn-danger px-5">
+                        <i class="fas fa-save me-2"></i>Save
+                    </button>
+                    <a href="{{ url_for('blood_request_list') }}" class="btn btn-secondary px-5">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Client-side validation
+(() => {
+  'use strict'
+
+  const forms = document.querySelectorAll('.needs-validation')
+
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
+{% endblock %}

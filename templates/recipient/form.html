@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-white border-bottom-0 py-4">
+        <h4 class="mb-0">{{ title }}</h4>
+    </div>
+    
+    <div class="card-body">
+        <form method="POST" class="needs-validation" novalidate>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Full Name</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <input type="text" 
+                               class="form-control" 
+                               name="name"
+                               value="{{ recipient.Name if recipient }}"
+                               placeholder="Enter full name"
+                               required>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter recipient's name
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Blood Group</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-tint"></i>
+                        </span>
+                        <select class="form-select" name="blood_group" required>
+                            <option value="">Select Blood Group</option>
+                            {% for bg in ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'] %}
+                            <option value="{{ bg }}" 
+                                {% if recipient and recipient.Blood_Group == bg %}selected{% endif %}>
+                                {{ bg }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please select blood group
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Age</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-calendar-alt"></i>
+                        </span>
+                        <input type="number" 
+                               class="form-control" 
+                               name="age"
+                               value="{{ recipient.Age if recipient }}"
+                               min="0" 
+                               max="120"
+                               placeholder="Age"
+                               required>
+                    </div>
+                    <div class="invalid-feedback">
+                        Age must be between 0 and 120
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Gender</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-venus-mars"></i>
+                        </span>
+                        <select class="form-select" name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male" {% if recipient and recipient.Gender == 'Male' %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if recipient and recipient.Gender == 'Female' %}selected{% endif %}>Female</option>
+                            <option value="Other" {% if recipient and recipient.Gender == 'Other' %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please select gender
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Contact Number</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-phone"></i>
+                        </span>
+                        <input type="tel" 
+                               class="form-control" 
+                               name="contact"
+                               value="{{ recipient.Contact_Number if recipient }}"
+                               pattern="[0-9]{10}"
+                               placeholder="10-digit number"
+                               required>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter valid 10-digit number
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Email Address</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <input type="email" 
+                               class="form-control" 
+                               name="email"
+                               value="{{ recipient.Email if recipient }}"
+                               placeholder="name@example.com"
+                               required>
+                    </div>
+                    <div class="invalid-feedback">
+                        Please enter valid email address
+                    </div>
+                </div>
+
+                <div class="col-12 text-end mt-4">
+                    <button type="submit" class="btn btn-danger px-5">
+                        <i class="fas fa-save me-2"></i>Save
+                    </button>
+                    <a href="{{ url_for('recipient_list') }}" class="btn btn-secondary px-5">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Client-side validation
+(() => {
+  'use strict'
+
+  const forms = document.querySelectorAll('.needs-validation')
+
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
+{% endblock %}

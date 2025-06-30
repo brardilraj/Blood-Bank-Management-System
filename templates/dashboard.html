@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Blood Stock Overview</h4>
+                <canvas id="bloodStockChart" style="height: 350px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-3 col-md-6 mb-4">
+        {% with title='Total Donors', value=donor_count, icon='users', color='primary' %}
+        {% include 'components/stats_card.html' %}
+        {% endwith %}
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        {% with title='Available Units', value=blood_units, icon='tint', color='danger' %}
+        {% include 'components/stats_card.html' %}
+        {% endwith %}
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        {% with title='Recipients', value=recipient_count, icon='heart-pulse', color='success' %}
+        {% include 'components/stats_card.html' %}
+        {% endwith %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% include 'components/blood_group_chart.html' %}
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-white border-bottom-0 py-4">
+        <h4 class="mb-0">Transaction History</h4>
+    </div>
+    
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="bg-light">
+                    <tr>
+                        <th>Date</th>
+                        <th>Donor</th>
+                        <th>Recipient</th>
+                        <th>Units</th>
+                        <th>Payment Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transaction in transactions %}
+                    <tr>
+                        <td>{{ transaction.Transaction_Date }}</td>
+                        <td>{{ transaction.donor_name }}</td>
+                        <td>{{ transaction.recipient_name }}</td>
+                        <td>{{ transaction.Units }}</td>
+                        <td>
+                            <span class="badge bg-{{ 'success' if transaction.Payment_Status == 'Paid' else 'warning' }}">
+                                {{ transaction.Payment_Status }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-receipt"></i> Invoice
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

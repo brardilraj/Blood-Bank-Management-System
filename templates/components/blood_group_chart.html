@@ -1,0 +1,38 @@
+{# templates/components/blood_group_chart.html #}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('bloodStockChart');
+    if (!ctx) {
+        console.error('Chart canvas not found!');
+        return;
+    }
+
+    // Validate data types
+    const labels = JSON.parse('{{ blood_groups | tojson | safe }}');
+    const data = JSON.parse('{{ blood_units_data | tojson | safe }}');
+
+    new Chart(ctx.getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Blood Units',
+                data: data,
+                backgroundColor: [
+                    '#dc3545', '#ffc107', '#28a745', '#17a2b8',
+                    '#6610f2', '#fd7e14', '#e83e8c', '#6f42c1'
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }
+    });
+});
+</script>

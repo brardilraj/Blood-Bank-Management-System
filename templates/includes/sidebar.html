@@ -1,0 +1,63 @@
+<div class="sidebar">
+    <div class="sidebar-header p-4">
+        <h5 class="text-danger mb-0">Navigation</h5>
+    </div>
+    <div class="sidebar-menu">
+        <ul class="list-unstyled">
+            <!-- Active Dashboard Link -->
+            <li class="sidebar-item {{ 'active' if request.endpoint == 'dashboard' }}">
+                <a href="{{ url_for('dashboard') }}" class="sidebar-link">
+                    <i class="fas fa-home me-3"></i>Dashboard
+                </a>
+            </li>
+
+            <!-- Donor Management -->
+            <li class="sidebar-item {{ 'active' if request.endpoint == 'donor_list' }}">
+                <a href="{{ url_for('donor_list') }}" class="sidebar-link">
+                    <i class="fas fa-user-plus me-3"></i>Donors
+                </a>
+            </li>
+
+            <!-- Recipient Management -->
+            <li class="sidebar-item {{ 'active' if request.endpoint == 'recipient_list' }}">
+                <a href="{{ url_for('recipient_list') }}" class="sidebar-link">
+                    <i class="fas fa-hand-holding-medical me-3"></i>Recipients
+                </a>
+            </li>
+
+            <!-- Blood Stock -->
+            <li class="sidebar-item {{ 'active' if request.endpoint == 'blood_stock' }}">
+                <a href="{{ url_for('blood_stock') }}" class="sidebar-link">
+                    <i class="fas fa-tint me-3"></i>Blood Stock
+                </a>
+            </li>
+
+            <!-- Blood Requests -->
+            <li class="sidebar-item {{ 'active' if request.endpoint == 'blood_request_list' }}">
+                <a href="{{ url_for('blood_request_list') }}" class="sidebar-link">
+                    <i class="fas fa-handshake me-3"></i>Requests
+                </a>
+            </li>
+
+            <!-- Coming Soon Sections -->
+            {# <!-- Temporarily hidden until implementation -->
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link text-muted">
+                    <i class="fas fa-exchange-alt me-3"></i>Transactions (Coming Soon)
+                </a>
+            </li>
+            #}
+
+            <!-- Admin-Only Sections -->
+            {% if current_user.role == 'admin' %}
+                {# <!-- Temporarily hidden until implementation -->
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link text-muted">
+                        <i class="fas fa-users-cog me-3"></i>User Management (Coming Soon)
+                    </a>
+                </li>
+                #}
+            {% endif %}
+        </ul>
+    </div>
+</div>

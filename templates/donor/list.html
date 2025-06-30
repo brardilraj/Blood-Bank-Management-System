@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-white border-bottom-0 py-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Donor Management</h4>
+            <div class="btn-group">
+                <a href="{{ url_for('export_donors_csv') }}" class="btn btn-success me-2">
+                    <i class="fas fa-file-csv me-2"></i>Export CSV
+                </a>
+                <a href="{{ url_for('add_donor') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>Add New Donor
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="bg-light">
+                    <tr>
+                        <th>Donor ID</th>
+                        <th>Name</th>
+                        <th>Blood Group</th>
+                        <th>Contact</th>
+                        <th>Last Donation</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for donor in donors %}
+                    <tr>
+                        <td>#{{ donor.Donor_ID }}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="avatar-sm me-3">
+                                    <div class="avatar-title bg-soft-primary rounded-circle">
+                                        <i class="fas fa-user fa-lg text-primary"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h6 class="mb-0">{{ donor.Name }}</h6>
+                                    <small class="text-muted">{{ donor.Email }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge bg-danger bg-opacity-10 text-danger">
+                                {{ donor.Blood_Group }}
+                            </span>
+                        </td>
+                        <td>{{ donor.Contact_Number }}</td>
+                        <td>{{ donor.Last_Donation_Date|default('Never', true) }}</td>
+                        <td>
+                            <span class="badge bg-{{ 'success' if donor.Eligibility_Status == 'Eligible' else 'secondary' }}">
+                                {{ donor.Eligibility_Status }}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a href="{{ url_for('edit_donor', id=donor.Donor_ID) }}" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button class="btn btn-sm btn-outline-danger"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#deleteModal{{ donor.Donor_ID }}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="deleteModal{{ donor.Donor_ID }}">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Confirm Delete</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete donor {{ donor.Name }}?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form method="POST" action="{{ url_for('delete_donor', id=donor.Donor_ID) }}">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
